@@ -68,7 +68,7 @@ public class BlurBitmapUtil
         Allocation allIn = Allocation.createFromBitmap(rs, bitmap);
         Allocation allOut = Allocation.createFromBitmap(rs, outBitmap);
         //设定模糊度(注：Radius最大只能设置25.f)
-        blurScript.setRadius(15.f);
+        blurScript.setRadius(25f);
         // Perform the Renderscript
         blurScript.setInput(allIn);
         blurScript.forEach(allOut);
