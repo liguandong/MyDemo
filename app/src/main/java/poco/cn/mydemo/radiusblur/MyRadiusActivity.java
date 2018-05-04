@@ -1,4 +1,4 @@
-package poco.cn.mydemo.blur.texture;
+package poco.cn.mydemo.radiusblur;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -18,10 +18,10 @@ import android.widget.FrameLayout;
 import android.widget.SeekBar;
 import android.widget.Toast;
 
-public class MyBlurActivity extends AppCompatActivity
+public class MyRadiusActivity extends AppCompatActivity
 {
 
-    private BlurPage surfaceView;
+    private RadiusPage surfaceView;
     private SeekBar seekbar;
     private FrameLayout parent;
     private String mImgPath;
@@ -39,7 +39,7 @@ public class MyBlurActivity extends AppCompatActivity
     private void initView()
     {
         FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        surfaceView = new BlurPage(getApplicationContext(), 1080, 1500);
+        surfaceView = new RadiusPage(getApplicationContext(), 1080, 1500);
         parent.addView(surfaceView, params);
 
         params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 150);
@@ -90,6 +90,7 @@ public class MyBlurActivity extends AppCompatActivity
         parent.addView(button, params);
 
 
+
     }
 
     public void onClick(View view)
@@ -112,11 +113,11 @@ public class MyBlurActivity extends AppCompatActivity
             Log.e("wuwang", "img->" + mImgPath);
             BitmapFactory.Options opts = new BitmapFactory.Options();
             opts.inJustDecodeBounds = true;
-            BitmapFactory.decodeFile(mImgPath, opts);
+            BitmapFactory.decodeFile(mImgPath,opts);
             opts.inSampleSize = calculateInSampleSize(opts, 1080, 1500);
             opts.inJustDecodeBounds = false;
-            final Bitmap bmp = BitmapFactory.decodeFile(mImgPath, opts);
-            if (bmp != null)
+            final Bitmap bmp =  BitmapFactory.decodeFile(mImgPath,opts);
+            if(bmp != null)
             {
                 seekbar.setProgress(50);
 //                parent.removeView(surfaceView);
@@ -124,8 +125,7 @@ public class MyBlurActivity extends AppCompatActivity
 //                FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(1080, ViewGroup.LayoutParams.WRAP_CONTENT);
 //                parent.addView(surfaceView,params);
                 surfaceView.setmBitmap(bmp);
-            } else
-            {
+            }else{
                 Toast.makeText(this, "加载失败", Toast.LENGTH_SHORT).show();
             }
             c.close();

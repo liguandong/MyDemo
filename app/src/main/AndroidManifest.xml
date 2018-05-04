@@ -47,11 +47,11 @@
             <!-- </intent-filter> -->
         </activity>
         <activity android:name=".blur.texture.MyBlurActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <!--  -->
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN"/>-->
+                <!--&lt;!&ndash;  &ndash;&gt;-->
+                <!--<category android:name="android.intent.category.LAUNCHER"/>-->
+            <!--</intent-filter>-->
         </activity>
         <activity android:name=".filterView.FilterActivity">
             <!--<intent-filter>-->
@@ -59,6 +59,22 @@
                 <!--&lt;!&ndash;  &ndash;&gt;-->
                 <!--<category android:name="android.intent.category.LAUNCHER"/>-->
             <!--</intent-filter>-->
+        </activity>
+
+        <activity android:name=".denoising.DenoisingActivity">
+            <!--<intent-filter>-->
+            <!--<action android:name="android.intent.action.MAIN"/>-->
+            <!--&lt;!&ndash;  &ndash;&gt;-->
+            <!--<category android:name="android.intent.category.LAUNCHER"/>-->
+            <!--</intent-filter>-->
+        </activity>
+
+        <activity android:name=".radiusblur.MyRadiusActivity">
+            <intent-filter>
+            <action android:name="android.intent.action.MAIN"/>
+            <!--  -->
+            <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
         </activity>
 
     </application>

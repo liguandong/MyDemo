@@ -1,4 +1,4 @@
-package poco.cn.mydemo.blur;
+package poco.cn.mydemo.denoising;
 
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
@@ -7,7 +7,7 @@ import android.widget.SeekBar;
 
 import poco.cn.mydemo.R;
 
-public class BlurActivity extends AppCompatActivity
+public class DenoisingActivity extends AppCompatActivity
 {
 
     private GLSurfaceView surfaceView;
@@ -26,14 +26,13 @@ public class BlurActivity extends AppCompatActivity
     {
         surfaceView = (GLSurfaceView) findViewById(R.id.surfaceView);
         surfaceView.setEGLContextClientVersion(2);
-        final BlurRender render = new BlurRender(this);
+        final DenoisingRender render = new DenoisingRender(this);
         surfaceView.setRenderer(render);
         surfaceView.setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
         seekbar = (SeekBar) findViewById(R.id.seekbar);
 //        seekbar.setOnClickListener(this);
         seekbar.setMax(100);
         seekbar.setProgress(100);
-
         seekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener()
         {
             @Override
