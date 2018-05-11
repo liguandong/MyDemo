@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package poco.cn.mydemo.blur.texture;
+package poco.cn.mydemo.base;
 
 import android.content.Context;
 import android.content.pm.ConfigurationInfo;
@@ -38,6 +38,8 @@ import javax.microedition.khronos.egl.EGLDisplay;
 import javax.microedition.khronos.egl.EGLSurface;
 import javax.microedition.khronos.opengles.GL;
 import javax.microedition.khronos.opengles.GL10;
+
+import poco.cn.mydemo.blur.texture.SystemProperties;
 
 /**
  * An implementation of TextureView that uses the dedicated surface for

@@ -9,7 +9,7 @@ import android.view.ScaleGestureDetector;
 
 import poco.cn.mydemo.R;
 import poco.cn.mydemo.blur.texture.BlurRenderer;
-import poco.cn.mydemo.blur.texture.GLTextureView;
+import poco.cn.mydemo.base.GLTextureView;
 
 /**
  * Created by lgd on 2018/4/4.

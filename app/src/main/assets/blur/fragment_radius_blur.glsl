@@ -15,9 +15,10 @@ uniform float uOffsetY;
 const float PI = 3.14159265;
 
 varying vec2 uv;
-const float sampleDist = 1.0;
-const float sampleStrength = 2.2;
-
+const float max_sampleDist = 1.0;
+const float max_sampleStrength = 2.2;
+uniform float uSampleDist ;
+uniform float uSampleStrength ;
 
 float compositeAlpha(float foregroundAlpha, float backgroundAlpha) {
     return 1.0f - (1.0f - backgroundAlpha) * (1.0f - foregroundAlpha);
@@ -79,6 +80,11 @@ void main(){
 //           gl_FragColor =clraverge;
 //          }
 //    }
+    float sampleDist = uSampleDist * max_sampleDist;
+    float sampleStrength = uSampleStrength * max_sampleStrength;
+
+
+
     float samples[10];
     samples[0] = -0.08;
     samples[1] = -0.05;
@@ -96,10 +102,12 @@ void main(){
     dir = dir/dist;
     vec4 color = texture2D(uNormalTexture,uv);
     vec4 sum = color;
+    //距离中心点越远，取样间隔越大
     for (int i = 0; i < 10; i++){
         sum += texture2D( uNormalTexture, uv + dir * samples[i] * sampleDist );
-        }
+    }
     sum *= 1.0/11.0;
+    //取样强度，距离中心点越远，模糊越大
     float t = dist * sampleStrength;
     t = clamp( t ,0.0,1.0);
     gl_FragColor = mix( color, sum, t );

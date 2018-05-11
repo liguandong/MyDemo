@@ -8,6 +8,7 @@ import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 
 import poco.cn.mydemo.R;
+import poco.cn.mydemo.base.GLTextureView;
 
 /**
  * Created by lgd on 2018/4/4.

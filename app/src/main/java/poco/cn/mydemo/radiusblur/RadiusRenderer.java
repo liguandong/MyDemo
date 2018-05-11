@@ -11,7 +11,7 @@ import javax.microedition.khronos.opengles.GL10;
 import poco.cn.mydemo.R;
 import poco.cn.mydemo.base.Drawable2d;
 import poco.cn.mydemo.base.GlUtil;
-import poco.cn.mydemo.blur.texture.GLTextureView;
+import poco.cn.mydemo.base.GLTextureView;
 import poco.cn.mydemo.opengl.utils.MatrixUtils;
 import poco.cn.mydemo.opengl.utils.ShaderUtils;
 
@@ -54,12 +54,19 @@ public class RadiusRenderer implements GLTextureView.Renderer
 
     private boolean hasCreated = false;
     private int uIsShowMask;
+    private int uSampleDistLoc;
+    private int uSampleStrengthLoc;
+
+    private  float sampleDist = 0.5f;
+    private  float sampleStrength = 0.5f;
 
     public RadiusRenderer(Context context)
     {
         this.context = context;
-        this.vertex = GlUtil.loadFromAssetsFile("blur/vertex_radius_blur.glsl",context.getResources());
-        this.fragment = GlUtil.loadFromAssetsFile("blur/fragment_radius_blur.glsl",context.getResources());
+//        this.vertex = GlUtil.loadFromAssetsFile("blur/vertex_radius_blur.glsl",context.getResources());
+//        this.fragment = GlUtil.loadFromAssetsFile("blur/fragment_radius_blur.glsl",context.getResources());
+        this.vertex = GlUtil.loadFromAssetsFile("blur/vertex_motion_blur.glsl",context.getResources());
+        this.fragment = GlUtil.loadFromAssetsFile("blur/fragment_motion_blur.glsl",context.getResources());
         mNormalBitmip = BitmapFactory.decodeResource(context.getResources(), R.drawable.homepage_img1);
 
 //        mNormalBitmip = BitmapFactory.decodeResource(context.getResources(), R.drawable.homepage_img1);
@@ -89,7 +96,8 @@ public class RadiusRenderer implements GLTextureView.Renderer
         uRadiusLoc = GLES20.glGetUniformLocation(mProgram, "uRadius");
         uXYLoc = GLES20.glGetUniformLocation(mProgram, "uXY");
         uCenterLoc = GLES20.glGetUniformLocation(mProgram, "uCenter");
-        uIsShowMask = GLES20.glGetUniformLocation(mProgram, "uIsShowMask");
+        uSampleDistLoc = GLES20.glGetUniformLocation(mProgram, "uSampleDist");
+        uSampleStrengthLoc = GLES20.glGetUniformLocation(mProgram, "uSampleStrength");
     }
 
     int mWidth;
@@ -121,6 +129,8 @@ public class RadiusRenderer implements GLTextureView.Renderer
         GLES20.glUniform1f(uXYLoc, XY);
         GLES20.glUniform2f(uCenterLoc, centerX,centerY);
         GLES20.glUniform1i(uIsShowMask, isShowMask);
+        GLES20.glUniform1f(uSampleDistLoc, sampleDist);
+        GLES20.glUniform1f(uSampleStrengthLoc, sampleStrength);
 
         GLES20.glUniform1i(uNormalTextureLoc, 0);
         GLES20.glUniformMatrix4fv(uMVPMatrixLoc, 1, false, mMVPMatrix, 0);
@@ -151,6 +161,18 @@ public class RadiusRenderer implements GLTextureView.Renderer
     public void setAlpha(float alpha)
     {
         this.alpha = 0.5f + 0.5f * alpha;
+    }
+
+    public void setDist(float process)
+    {
+        this.sampleDist = process;
+//        this.sampleDist = 1.0f + (process - 0.0f) * 1.0f;
+    }
+
+    public void setStrength(float process)
+    {
+//        this.sampleStrength = 2.2f + (process - 0.5f) * 2.2f;
+        this.sampleStrength = process;
     }
 
     public void setScale(float deltaScale)

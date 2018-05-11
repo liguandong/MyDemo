@@ -8,7 +8,7 @@ import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 
 import poco.cn.mydemo.R;
-import poco.cn.mydemo.blur.texture.GLTextureView;
+import poco.cn.mydemo.base.GLTextureView;
 
 /**
  * Created by lgd on 2018/4/4.
@@ -187,9 +187,15 @@ public class RadiusPage extends GLTextureView
 
     }
 
-    public void setBlurAlpha(float alpha)
+    public void setProcess1(float process)
     {
-        mRender.setAlpha(alpha);
+        mRender.setDist(process);
+        requestRender();
+    }
+
+    public void setProcess2(float process)
+    {
+        mRender.setStrength(process);
         requestRender();
     }
 }

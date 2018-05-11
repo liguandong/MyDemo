@@ -8,6 +8,7 @@ import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
 import poco.cn.mydemo.base.Drawable2d;
+import poco.cn.mydemo.base.GLTextureView;
 import poco.cn.mydemo.base.GlUtil;
 import poco.cn.mydemo.imgprocess.BlurBitmapUtil;
 import poco.cn.mydemo.opengl.utils.MatrixUtils;

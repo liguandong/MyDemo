@@ -13,7 +13,6 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.SeekBar;
 import android.widget.Toast;
@@ -22,9 +21,10 @@ public class MyRadiusActivity extends AppCompatActivity
 {
 
     private RadiusPage surfaceView;
-    private SeekBar seekbar;
+    private SeekBar seekbar1;
     private FrameLayout parent;
     private String mImgPath;
+    private SeekBar seekbar2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -42,19 +42,19 @@ public class MyRadiusActivity extends AppCompatActivity
         surfaceView = new RadiusPage(getApplicationContext(), 1080, 1500);
         parent.addView(surfaceView, params);
 
-        params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 150);
+        params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 100);
         params.gravity = Gravity.BOTTOM;
-        params.bottomMargin = 50;
-        seekbar = new SeekBar(getApplicationContext());
-        seekbar.setPadding(0, 50, 0, 50);
-//        seekbar.setOnClickListener(this);
-        seekbar.setMax(100);
-        seekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener()
+        params.bottomMargin = 20;
+        seekbar1 = new SeekBar(getApplicationContext());
+        seekbar1.setPadding(0, 50, 0, 50);
+//        seekbar1.setOnClickListener(this);
+        seekbar1.setMax(100);
+        seekbar1.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener()
         {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser)
             {
-                surfaceView.setBlurAlpha(progress * 1.0f / 100);
+                surfaceView.setProcess1(progress * 1.0f / 100);
                 surfaceView.requestRender();
             }
 
@@ -70,24 +70,58 @@ public class MyRadiusActivity extends AppCompatActivity
 
             }
         });
-        seekbar.setProgress(50);
-        parent.addView(seekbar, params);
+        seekbar1.setProgress(50);
+        parent.addView(seekbar1, params);
 
-        Button button = new Button(getApplicationContext());
-        button.setText("保存获取bitmap");
-        button.setOnClickListener(new View.OnClickListener()
+
+        params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 100);
+        params.gravity = Gravity.BOTTOM;
+        params.bottomMargin = 160;
+        seekbar2 = new SeekBar(getApplicationContext());
+        seekbar2.setPadding(0, 50, 0, 50);
+//        seekbar1.setOnClickListener(this);
+        seekbar2.setMax(100);
+        seekbar2.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener()
         {
             @Override
-            public void onClick(View v)
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser)
+            {
+                surfaceView.setProcess2(progress * 1.0f / 100);
+                surfaceView.requestRender();
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar)
+            {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar)
             {
 
             }
         });
-        params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        params.bottomMargin = 20;
-        params.leftMargin = 20;
-        params.gravity = Gravity.BOTTOM | Gravity.RIGHT;
-        parent.addView(button, params);
+        seekbar2.setProgress(50);
+        parent.addView(seekbar2, params);
+
+
+//
+//        Button button = new Button(getApplicationContext());
+//        button.setText("保存获取bitmap");
+//        button.setOnClickListener(new View.OnClickListener()
+//        {
+//            @Override
+//            public void onClick(View v)
+//            {
+//
+//            }
+//        });
+//        params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+//        params.bottomMargin = 20;
+//        params.leftMargin = 20;
+//        params.gravity = Gravity.BOTTOM | Gravity.RIGHT;
+//        parent.addView(button, params);
 
 
 
@@ -119,7 +153,7 @@ public class MyRadiusActivity extends AppCompatActivity
             final Bitmap bmp =  BitmapFactory.decodeFile(mImgPath,opts);
             if(bmp != null)
             {
-                seekbar.setProgress(50);
+                seekbar1.setProgress(50);
 //                parent.removeView(surfaceView);
 //                surfaceView = new BlurPage(getApplicationContext(),1080,1500);
 //                FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(1080, ViewGroup.LayoutParams.WRAP_CONTENT);
