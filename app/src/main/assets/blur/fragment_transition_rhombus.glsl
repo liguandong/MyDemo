@@ -16,7 +16,7 @@ void main(){
 //     }
 
     //这里是正方形
-    float width = 2.05f; //菱形的宽高，包住整个屏幕
+    float width = 2.05f; //菱形的宽高，2 可以包住整个屏幕
     float height = width / uXY;
     if((abs(vPosition.x) + abs(vPosition.y / uXY)) * width <= width * height * uProgress ){
         gl_FragColor = texture2D(uBlurTexture,vCoordinate);
