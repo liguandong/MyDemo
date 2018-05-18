@@ -10,8 +10,8 @@ import javax.microedition.khronos.opengles.GL10;
 
 import poco.cn.mydemo.R;
 import poco.cn.mydemo.base.Drawable2d;
-import poco.cn.mydemo.base.GlUtil;
 import poco.cn.mydemo.base.GLTextureView;
+import poco.cn.mydemo.base.GlUtil;
 import poco.cn.mydemo.opengl.utils.MatrixUtils;
 import poco.cn.mydemo.opengl.utils.ShaderUtils;
 
@@ -45,33 +45,50 @@ public class RadiusRenderer implements GLTextureView.Renderer
     private int uXYLoc;
     private int isShowMask = 0;
     private Bitmap mNormalBitmip;
+    private Bitmap mBlurBitmip;
 
     private float[] mMVPMatrix=new float[16];
     private int uNormalTextureLoc;
+    private int uBlurTextureLoc;
     private int mNormalTextureId = GlUtil.NO_TEXTURE;
     private int mBlurTextureId = GlUtil.NO_TEXTURE;
     private int uCenterLoc;
 
     private boolean hasCreated = false;
     private int uIsShowMask;
-    private int uSampleDistLoc;
+    private int uProgressLoc;
     private int uSampleStrengthLoc;
 
-    private  float sampleDist = 0.5f;
+    private  float progress = 0.5f;
     private  float sampleStrength = 0.5f;
 
     public RadiusRenderer(Context context)
     {
         this.context = context;
-//        this.vertex = GlUtil.loadFromAssetsFile("blur/vertex_radius_blur.glsl",context.getResources());
-//        this.fragment = GlUtil.loadFromAssetsFile("blur/fragment_radius_blur.glsl",context.getResources());
-        this.vertex = GlUtil.loadFromAssetsFile("blur/vertex_motion_blur.glsl",context.getResources());
-        this.fragment = GlUtil.loadFromAssetsFile("blur/fragment_motion_blur.glsl",context.getResources());
+//        this.vertex = GlUtil.loadFromAssetsFile("blur/vertex_transition_radius.glsl",context.getResources());
+//        this.fragment = GlUtil.loadFromAssetsFile("blur/fragment_transition_radius.glsl",context.getResources());
+
+//        this.vertex = GlUtil.loadFromAssetsFile("blur/vertex_motion_blur.glsl",context.getResources());
+//        this.fragment = GlUtil.loadFromAssetsFile("blur/fragment_motion_blur.glsl",context.getResources());
+
+        this.vertex = GlUtil.loadFromAssetsFile("blur/vertex_transition_rhombus.glsl",context.getResources());
+        this.fragment = GlUtil.loadFromAssetsFile("blur/fragment_transition_rhombus.glsl",context.getResources());
+
+//        this.vertex = GlUtil.loadFromAssetsFile("blur/vertex_transition_circle_in.glsl",context.getResources());
+//        this.fragment = GlUtil.loadFromAssetsFile("blur/fragment_transition_circle_in.glsl",context.getResources());
+
+//        this.vertex = GlUtil.loadFromAssetsFile("blur/vertex_transition_circle_out.glsl",context.getResources());
+//        this.fragment = GlUtil.loadFromAssetsFile("blur/fragment_transition_circle_out.glsl",context.getResources());
+
+//        this.vertex = GlUtil.loadFromAssetsFile("blur/vertex_transition_ribbon.glsl",context.getResources());
+//        this.fragment = GlUtil.loadFromAssetsFile("blur/fragment_transition_ribbon.glsl",context.getResources());
+
         mNormalBitmip = BitmapFactory.decodeResource(context.getResources(), R.drawable.homepage_img1);
 
 //        mNormalBitmip = BitmapFactory.decodeResource(context.getResources(), R.drawable.homepage_img1);
 //        mNormalBitmip = Bitmap.createScaledBitmap(mNormalBitmip,mNormalBitmip.getWidth()/2,mNormalBitmip.getHeight()/2,false);
-//        mBlurBitmip = BlurBitmapUtil.blurBitmap(context,mNormalBitmip,10);
+//        mBlurBitmip = BlurBitmapUtil.blurBitmap(context,mNormalBitmip,5);
+        mBlurBitmip = BitmapFactory.decodeResource(context.getResources(),R.drawable.homepage_img2);
 //        XY = mNormalBitmip.getWidth() * 1.0f / mNormalBitmip.getHeight();
     }
 
@@ -79,25 +96,17 @@ public class RadiusRenderer implements GLTextureView.Renderer
         GLES20.glUseProgram(mProgram);
     }
 
+    boolean reFresh = false;
     @Override
     public void onSurfaceCreated(GL10 gl, EGLConfig config)
     {
         GLES20.glClearColor(1.0f,1.0f,1.0f,1.0f);
 
         mNormalTextureId = ShaderUtils.createTexture(mNormalBitmip);
+        mBlurTextureId = ShaderUtils.createTexture(mBlurBitmip);
 
         mProgram = GlUtil.createProgram(vertex,fragment);
-        aPositionLoc = GLES20.glGetAttribLocation(mProgram, "aPosition");
-        aTextureCoordLoc = GLES20.glGetAttribLocation(mProgram, "aTextureCoord");
-        uMVPMatrixLoc = GLES20.glGetUniformLocation(mProgram, "uMVPMatrix");
-        uTexMatrixLoc = GLES20.glGetUniformLocation(mProgram, "uTexMatrix");
-        uNormalTextureLoc = GLES20.glGetUniformLocation(mProgram, "uNormalTexture");
-        uAlphaLoc = GLES20.glGetUniformLocation(mProgram, "uAlpha");
-        uRadiusLoc = GLES20.glGetUniformLocation(mProgram, "uRadius");
-        uXYLoc = GLES20.glGetUniformLocation(mProgram, "uXY");
-        uCenterLoc = GLES20.glGetUniformLocation(mProgram, "uCenter");
-        uSampleDistLoc = GLES20.glGetUniformLocation(mProgram, "uSampleDist");
-        uSampleStrengthLoc = GLES20.glGetUniformLocation(mProgram, "uSampleStrength");
+
     }
 
     int mWidth;
@@ -114,13 +123,32 @@ public class RadiusRenderer implements GLTextureView.Renderer
     @Override
     public boolean onDrawFrame(GL10 gl)
     {
+        if(reFresh){
+            reFresh = false;
+            onSurfaceCreated(gl,null);
+            onSurfaceChanged(gl,mWidth,mHeight);
+        }
+
         GLES20.glClearColor(1.0f,1.0f,1.0f,1.0f);
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT| GLES20.GL_DEPTH_BUFFER_BIT);
+
+        aPositionLoc = GLES20.glGetAttribLocation(mProgram, "aPosition");
+        aTextureCoordLoc = GLES20.glGetAttribLocation(mProgram, "aTextureCoord");
+        uMVPMatrixLoc = GLES20.glGetUniformLocation(mProgram, "uMVPMatrix");
+        uTexMatrixLoc = GLES20.glGetUniformLocation(mProgram, "uTexMatrix");
+        uNormalTextureLoc = GLES20.glGetUniformLocation(mProgram, "uNormalTexture");
+        uBlurTextureLoc = GLES20.glGetUniformLocation(mProgram, "uBlurTexture");
+        uAlphaLoc = GLES20.glGetUniformLocation(mProgram, "uAlpha");
+        uRadiusLoc = GLES20.glGetUniformLocation(mProgram, "uRadius");
+        uXYLoc = GLES20.glGetUniformLocation(mProgram, "uXY");
+        uCenterLoc = GLES20.glGetUniformLocation(mProgram, "uCenter");
+        uProgressLoc = GLES20.glGetUniformLocation(mProgram, "uProgress");
+        uSampleStrengthLoc = GLES20.glGetUniformLocation(mProgram, "uSampleStrength");
 
         GLES20.glActiveTexture(GLES20.GL_TEXTURE0);
         GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, mNormalTextureId);
 
-        GLES20.glActiveTexture(GLES20.GL_TEXTURE3);
+        GLES20.glActiveTexture(GLES20.GL_TEXTURE1);
         GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, mBlurTextureId);
 
         GLES20.glUseProgram(mProgram);
@@ -129,10 +157,11 @@ public class RadiusRenderer implements GLTextureView.Renderer
         GLES20.glUniform1f(uXYLoc, XY);
         GLES20.glUniform2f(uCenterLoc, centerX,centerY);
         GLES20.glUniform1i(uIsShowMask, isShowMask);
-        GLES20.glUniform1f(uSampleDistLoc, sampleDist);
+        GLES20.glUniform1f(uProgressLoc, progress);
         GLES20.glUniform1f(uSampleStrengthLoc, sampleStrength);
 
         GLES20.glUniform1i(uNormalTextureLoc, 0);
+        GLES20.glUniform1i(uBlurTextureLoc, 1);
         GLES20.glUniformMatrix4fv(uMVPMatrixLoc, 1, false, mMVPMatrix, 0);
         GLES20.glEnableVertexAttribArray(aPositionLoc);
         GLES20.glVertexAttribPointer(aPositionLoc, mDrawable2d.getCoordsPerVertex(),
@@ -165,8 +194,8 @@ public class RadiusRenderer implements GLTextureView.Renderer
 
     public void setDist(float process)
     {
-        this.sampleDist = process;
-//        this.sampleDist = 1.0f + (process - 0.0f) * 1.0f;
+        this.progress = process;
+//        this.progress = 1.0f + (process - 0.0f) * 1.0f;
     }
 
     public void setStrength(float process)
@@ -230,5 +259,11 @@ public class RadiusRenderer implements GLTextureView.Renderer
         }else{
             isShowMask = 0;
         }
+    }
+    public void setShader (String vector,String fragment)
+    {
+        this.vertex = GlUtil.loadFromAssetsFile(vector,context.getResources());
+        this.fragment = GlUtil.loadFromAssetsFile(fragment,context.getResources());
+        reFresh = true;
     }
 }

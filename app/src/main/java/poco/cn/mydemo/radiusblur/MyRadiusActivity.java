@@ -1,5 +1,6 @@
 package poco.cn.mydemo.radiusblur;
 
+import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
@@ -11,11 +12,15 @@ import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.SeekBar;
 import android.widget.Toast;
+
+import poco.cn.mydemo.R;
 
 public class MyRadiusActivity extends AppCompatActivity
 {
@@ -25,7 +30,7 @@ public class MyRadiusActivity extends AppCompatActivity
     private FrameLayout parent;
     private String mImgPath;
     private SeekBar seekbar2;
-
+    ValueAnimator valueAnimator;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -38,6 +43,20 @@ public class MyRadiusActivity extends AppCompatActivity
 
     private void initView()
     {
+        valueAnimator = new ValueAnimator();
+        valueAnimator.setDuration(1000);
+        valueAnimator.setRepeatCount(ValueAnimator.INFINITE);
+        valueAnimator.setFloatValues(0f,1f);
+        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener()
+        {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation)
+            {
+                surfaceView.setProcess1((Float) animation.getAnimatedValue());
+                surfaceView.requestRender();
+            }
+        });
+
         FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         surfaceView = new RadiusPage(getApplicationContext(), 1080, 1500);
         parent.addView(surfaceView, params);
@@ -56,12 +75,13 @@ public class MyRadiusActivity extends AppCompatActivity
             {
                 surfaceView.setProcess1(progress * 1.0f / 100);
                 surfaceView.requestRender();
+
             }
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar)
             {
-
+                valueAnimator.cancel();
             }
 
             @Override
@@ -86,20 +106,22 @@ public class MyRadiusActivity extends AppCompatActivity
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser)
             {
-                surfaceView.setProcess2(progress * 1.0f / 100);
-                surfaceView.requestRender();
+//                surfaceView.setProcess2(progress * 1.0f / 100);
+//                surfaceView.requestRender();
+                valueAnimator.setDuration((long) (500 + progress * 1.0f/100  * 2000));
             }
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar)
             {
-
+                valueAnimator.cancel();
             }
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar)
             {
-
+                valueAnimator.
+                        start();
             }
         });
         seekbar2.setProgress(50);
@@ -211,4 +233,51 @@ public class MyRadiusActivity extends AppCompatActivity
         super.onResume();
         surfaceView.onResume();
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_filter,menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(final MenuItem item) {
+//        surfaceView.queueEvent(new Runnable()
+//        {
+//            @Override
+//            public void run()
+//            {
+                switch (item.getItemId()){
+                    case R.id.circle_in:
+                        surfaceView.getRender().setShader("blur/vertex_transition_circle_in.glsl","blur/fragment_transition_circle_in.glsl");
+                        break;
+                    case R.id.circle_out:
+                        surfaceView.getRender().setShader("blur/vertex_transition_circle_out.glsl","blur/fragment_transition_circle_out.glsl");
+                        break;
+                    case R.id.rhombus:
+                        surfaceView.getRender().setShader("blur/vertex_transition_rhombus.glsl","blur/fragment_transition_rhombus.glsl");
+                        break;
+                    case R.id.radius:
+                        surfaceView.getRender().setShader("blur/vertex_transition_circle_in.glsl","blur/fragment_transition_circle_in.glsl");
+                        break;
+                    case R.id.slip:
+                        surfaceView.getRender().setShader("blur/vertex_transition_circle_in.glsl","blur/fragment_transition_circle_in.glsl");
+                        break;
+
+                }
+//                MyRadiusActivity.this.runOnUiThread(new Runnable()
+//                {
+//                    @Override
+//                    public void run()
+//                    {
+//                        surfaceView.requestRender();
+//                    }
+//                });
+//            }
+//        });
+        surfaceView.requestRender();
+
+        return super.onOptionsItemSelected(item);
+    }
+
 }

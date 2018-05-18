@@ -198,4 +198,9 @@ public class RadiusPage extends GLTextureView
         mRender.setStrength(process);
         requestRender();
     }
+
+    public RadiusRenderer getRender()
+    {
+        return mRender;
+    }
 }

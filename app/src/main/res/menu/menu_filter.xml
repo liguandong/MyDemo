@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item android:id="@+id/circle_in"
+          android:title="圈入" />
+    <item android:id="@+id/circle_out"
+        android:title="圈出" />
+    <item android:id="@+id/rhombus"
+        android:title="菱形" />
+    <item android:id="@+id/radius"
+        android:title="径向模糊" />
+    <item android:id="@+id/slip"
+        android:title="滑动" />
+    <item android:id="@+id/colour"
+        android:title="彩带" />
+</menu>

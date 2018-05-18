@@ -17,7 +17,7 @@ const float PI = 3.14159265;
 varying vec2 uv;
 const float max_sampleDist = 1.0;
 const float max_sampleStrength = 2.2;
-uniform float uSampleDist ;
+uniform float uProgress ;
 uniform float uSampleStrength ;
 
 float compositeAlpha(float foregroundAlpha, float backgroundAlpha) {
@@ -80,8 +80,10 @@ void main(){
 //           gl_FragColor =clraverge;
 //          }
 //    }
-    float sampleDist = uSampleDist * max_sampleDist;
-    float sampleStrength = uSampleStrength * max_sampleStrength;
+
+
+    float sampleDist = uProgress * max_sampleDist;
+    float sampleStrength = uProgress * max_sampleStrength;
 
 
 
