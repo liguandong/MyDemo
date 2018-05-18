@@ -71,8 +71,8 @@ public class RadiusRenderer implements GLTextureView.Renderer
 //        this.vertex = GlUtil.loadFromAssetsFile("blur/vertex_motion_blur.glsl",context.getResources());
 //        this.fragment = GlUtil.loadFromAssetsFile("blur/fragment_motion_blur.glsl",context.getResources());
 
-        this.vertex = GlUtil.loadFromAssetsFile("blur/vertex_transition_rhombus.glsl",context.getResources());
-        this.fragment = GlUtil.loadFromAssetsFile("blur/fragment_transition_rhombus.glsl",context.getResources());
+//        this.vertex = GlUtil.loadFromAssetsFile("blur/vertex_transition_rhombus.glsl",context.getResources());
+//        this.fragment = GlUtil.loadFromAssetsFile("blur/fragment_transition_rhombus.glsl",context.getResources());
 
 //        this.vertex = GlUtil.loadFromAssetsFile("blur/vertex_transition_circle_in.glsl",context.getResources());
 //        this.fragment = GlUtil.loadFromAssetsFile("blur/fragment_transition_circle_in.glsl",context.getResources());
@@ -82,6 +82,9 @@ public class RadiusRenderer implements GLTextureView.Renderer
 
 //        this.vertex = GlUtil.loadFromAssetsFile("blur/vertex_transition_ribbon.glsl",context.getResources());
 //        this.fragment = GlUtil.loadFromAssetsFile("blur/fragment_transition_ribbon.glsl",context.getResources());
+
+        this.vertex = GlUtil.loadFromAssetsFile("blur/vertex_transition_louver.glsl",context.getResources());
+        this.fragment = GlUtil.loadFromAssetsFile("blur/fragment_transition_louver.glsl",context.getResources());
 
         mNormalBitmip = BitmapFactory.decodeResource(context.getResources(), R.drawable.homepage_img1);
 
