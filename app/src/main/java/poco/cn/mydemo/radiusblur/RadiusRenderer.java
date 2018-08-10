@@ -5,15 +5,15 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.opengl.GLES20;
 
+import com.adnonstop.gles.Drawable2d;
+import com.adnonstop.gles.GlUtil;
+
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
 import poco.cn.mydemo.R;
-import poco.cn.mydemo.base.Drawable2d;
-import poco.cn.mydemo.base.GLTextureView;
-import poco.cn.mydemo.base.GlUtil;
-import poco.cn.mydemo.opengl.utils.MatrixUtils;
-import poco.cn.mydemo.opengl.utils.ShaderUtils;
+import poco.cn.mydemo.medio.utils.MatrixUtils;
+import poco.cn.mydemo.medio.utils.ShaderUtils;
 
 
 /**
@@ -24,7 +24,7 @@ import poco.cn.mydemo.opengl.utils.ShaderUtils;
  * 5 对变量赋值   投影，相机，转换
  * Created by lgd on 2018/4/2.
  */
-public class RadiusRenderer implements GLTextureView.Renderer
+public class RadiusRenderer implements poco.cn.mydemo.base.GLTextureView.Renderer
 {
     private float alpha = 1.0f;
     private float radius = 0.6f;
@@ -83,8 +83,8 @@ public class RadiusRenderer implements GLTextureView.Renderer
 //        this.vertex = GlUtil.loadFromAssetsFile("blur/vertex_transition_ribbon.glsl",context.getResources());
 //        this.fragment = GlUtil.loadFromAssetsFile("blur/fragment_transition_ribbon.glsl",context.getResources());
 
-        this.vertex = GlUtil.loadFromAssetsFile("blur/vertex_transition_louver.glsl",context.getResources());
-        this.fragment = GlUtil.loadFromAssetsFile("blur/fragment_transition_louver.glsl",context.getResources());
+        this.vertex = ShaderUtils.loadFromAssetsFile("blur/vertex_transition_louver.glsl",context.getResources());
+        this.fragment = ShaderUtils.loadFromAssetsFile("blur/fragment_transition_louver.glsl",context.getResources());
 
         mNormalBitmip = BitmapFactory.decodeResource(context.getResources(), R.drawable.homepage_img1);
 
@@ -265,8 +265,8 @@ public class RadiusRenderer implements GLTextureView.Renderer
     }
     public void setShader (String vector,String fragment)
     {
-        this.vertex = GlUtil.loadFromAssetsFile(vector,context.getResources());
-        this.fragment = GlUtil.loadFromAssetsFile(fragment,context.getResources());
+        this.vertex = ShaderUtils.loadFromAssetsFile(vector,context.getResources());
+        this.fragment = ShaderUtils.loadFromAssetsFile(fragment,context.getResources());
         reFresh = true;
     }
 }
