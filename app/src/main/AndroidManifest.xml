@@ -12,69 +12,21 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".video.MainActivity">
 
-            <!-- <intent-filter> -->
-            <!-- <action android:name="android.intent.action.MAIN"/> -->
+             <intent-filter>
+             <action android:name="android.intent.action.MAIN"/>
 
 
-            <!-- <category android:name="android.intent.category.LAUNCHER"/> -->
-            <!-- </intent-filter> -->
+             <category android:name="android.intent.category.LAUNCHER"/>
+             </intent-filter>
         </activity>
-        <activity android:name=".opengl.img.TextureActivity">
-
-            <!-- <intent-filter> -->
-            <!-- <action android:name="android.intent.action.MAIN"/> -->
-
-
-            <!-- <category android:name="android.intent.category.LAUNCHER"/> -->
-            <!-- </intent-filter> -->
-        </activity>
-        <activity android:name=".imgprocess.EmptyActivity">
-
-            <!-- <intent-filter> -->
-            <!-- <action android:name="android.intent.action.MAIN"/> -->
-            <!-- &lt;!&ndash;  &ndash;&gt; -->
-            <!-- <category android:name="android.intent.category.LAUNCHER"/> -->
-            <!-- </intent-filter> -->
-        </activity>
-        <activity android:name=".blur.BlurActivity">
-
-            <!-- <intent-filter> -->
-            <!-- <action android:name="android.intent.action.MAIN"/> -->
-            <!-- &lt;!&ndash;  &ndash;&gt; -->
-            <!-- <category android:name="android.intent.category.LAUNCHER"/> -->
-            <!-- </intent-filter> -->
-        </activity>
-        <activity android:name=".blur.texture.MyBlurActivity">
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.MAIN"/>-->
-                <!--&lt;!&ndash;  &ndash;&gt;-->
-                <!--<category android:name="android.intent.category.LAUNCHER"/>-->
-            <!--</intent-filter>-->
-        </activity>
-        <activity android:name=".filterView.FilterActivity">
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.MAIN"/>-->
-                <!--&lt;!&ndash;  &ndash;&gt;-->
-                <!--<category android:name="android.intent.category.LAUNCHER"/>-->
-            <!--</intent-filter>-->
-        </activity>
-
-        <activity android:name=".denoising.DenoisingActivity">
+        <activity android:name=".radiusblur.MyRadiusActivity">
             <!--<intent-filter>-->
             <!--<action android:name="android.intent.action.MAIN"/>-->
             <!--&lt;!&ndash;  &ndash;&gt;-->
             <!--<category android:name="android.intent.category.LAUNCHER"/>-->
             <!--</intent-filter>-->
-        </activity>
-
-        <activity android:name=".radiusblur.MyRadiusActivity">
-            <intent-filter>
-            <action android:name="android.intent.action.MAIN"/>
-            <!--  -->
-            <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
         </activity>
 
     </application>
